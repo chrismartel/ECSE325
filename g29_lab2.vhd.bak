@@ -1,0 +1,14 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+entity g29_MAC is
+	port( x : in std_logic_vector(?? downto 0);	--first input, you have to first calculate length
+			y : in std_logic_vector(?? downto 0);  --second input, replace ?? with your length
+			N : in std_logic_vector(9 downto 0);	--total number of inputs
+			clk : in std_logic; 							--clock
+			rst : in std_logic;							--asynchronous reset acive high)
+			mac : in std_logicvector(?? downto 0); --output of MAC unit, replace the length
+			ready : in std_logic);						--denotes the validit of the mac signal
+end g29_MAC;
+
