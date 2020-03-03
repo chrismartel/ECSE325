@@ -6,13 +6,15 @@ public class Number {
 	private boolean isNegative;
 	private String fullNumberDecimal;
 	private String fullNumberSignedBinary;
+	private String fullNumberFixedPointNotation;
+
 	private String fullNumberUnsignedBinary;
 
 	private String integerBinary;
 	private String fractionBinary;
-	private int fractionBinaryLength;
+	private int fractionBinaryLength; //f
 	private int integerBinaryLength;
-	private int binaryLength;
+	private int binaryLength; //w
 	
 	public Number(){
 		this.fullNumberSignedBinary="";
@@ -90,5 +92,11 @@ public class Number {
 	}
 	 public void setFullNumberUnsignedBinary(String fullNumberUnsignedBinary) {
 		this.fullNumberUnsignedBinary = fullNumberUnsignedBinary;
+	}
+	 public String getFullNumberFixedPointNotation() {
+		return fullNumberFixedPointNotation;
+	}
+	 public void setFullNumberFixedPointNotation(String fullNumberFixedPointNotation) {
+		this.fullNumberFixedPointNotation = fullNumberFixedPointNotation;
 	}
 }

@@ -23,20 +23,27 @@ public class findPrecision {
 		ArrayList<Number> parseX = parseText(bufferx, n);
 		ArrayList<Number> parseY = parseText(buffery, n);
 
-		for(Number number: parseX) {
+		for (Number number : parseX) {
 			convertDecimalFractionToBinary(number);
 			convertDecimalIntegerToBinary(number);
 			assembleUnsignedBinaryNumber(number);
-			System.out.println(assembleUnsignedBinaryNumber(number)+" VS "+assembleSignedBinaryNumber(number));
-			
+			assembleSignedBinaryNumber(number);
+			assembleFixedPointNotation(number);
+			System.out.println(assembleFixedPointNotation(number));
 		}
-		for(Number number: parseY) {
+		System.out.println("FOR Y: \\\n");
+
+		for (Number number : parseY) {
 			convertDecimalFractionToBinary(number);
 			convertDecimalIntegerToBinary(number);
 			assembleUnsignedBinaryNumber(number);
+			assembleSignedBinaryNumber(number);
+			assembleFixedPointNotation(number);
+			System.out.println(assembleFixedPointNotation(number));
+
 
 		}
-		
+
 	}
 
 	public static ArrayList<Number> parseText(BufferedReader reader, int n) throws IOException {
@@ -54,7 +61,7 @@ public class findPrecision {
 
 				if (c == 46) {
 					fractionalCount = true;
-					number.setFullNumberDecimal(number.getFullNumberDecimal()+".");
+					number.setFullNumberDecimal(number.getFullNumberDecimal() + ".");
 
 				} else {
 					if (fractionalCount) {
@@ -63,19 +70,18 @@ public class findPrecision {
 					} else {
 						if (c == 45) {
 							number.setNegative(true);
-						}
-						else {
+						} else {
 							integer = integer + ((char) c);
 
 						}
 					}
-					number.setFullNumberDecimal(number.getFullNumberDecimal()+((char) c));
+					number.setFullNumberDecimal(number.getFullNumberDecimal() + ((char) c));
 				}
 
 			}
 			number.setInteger(integer);
-			if(fraction.equals("")){
-			fraction = "0";
+			if (fraction.equals("")) {
+				fraction = "0";
 			}
 			number.setFraction(fraction);
 			parsedArray.add(i, number);
@@ -91,102 +97,112 @@ public class findPrecision {
 	public static String convertDecimalIntegerToBinary(Number number) {
 		String binary = "";
 		String decimalIntegerString = number.getInteger();
-	
 
 		int decimalIntegerInt = Integer.parseInt(decimalIntegerString);
 		// get unsigned value in bits
 		binary = Integer.toBinaryString(decimalIntegerInt);
-		if(binary.charAt(0)==49) {
-			binary = "0"+binary;
+		if (binary.charAt(0) == 49) {
+			binary = "0" + binary;
 		}
 		number.setIntegerBinary(binary);
 		number.setIntegerBinaryLength(binary.length());
 		return binary;
 
 	}
+
 	public static String convertDecimalFractionToBinary(Number number) {
 		String binary = "";
 		int decimalFractionLength = number.getFraction().length();
-		double decimalFraction = (Integer.parseInt(number.getFraction()))/(Math.pow(10, decimalFractionLength));
-		while(decimalFraction!=0) {
-			 decimalFraction = decimalFraction*2;
-			if(decimalFraction>=1) {
-				decimalFraction = decimalFraction-1;
-				binary = binary+"1";
+		double decimalFraction = (Integer.parseInt(number.getFraction())) / (Math.pow(10, decimalFractionLength));
+		while (decimalFraction != 0) {
+			decimalFraction = decimalFraction * 2;
+			if (decimalFraction >= 1) {
+				decimalFraction = decimalFraction - 1;
+				binary = binary + "1";
+			} else {
+				binary = binary + "0";
 			}
-			else {
-				binary = binary+"0";
-			}
-			
+
 		}
 		number.setFractionBinary(binary);
 		number.setFractionBinaryLength(binary.length());
 		return binary;
 
 	}
-	
+
 	public static String assembleUnsignedBinaryNumber(Number number) {
 		String unsignedBinaryNumber = "";
-		unsignedBinaryNumber = number.getIntegerBinary()+number.getFractionBinary();
+		unsignedBinaryNumber = number.getIntegerBinary() + number.getFractionBinary();
 		number.setFullNumberUnsignedBinary(unsignedBinaryNumber);
-		number.setBinaryLength(number.getFractionBinaryLength()+number.getIntegerBinaryLength());
+		number.setBinaryLength(number.getFractionBinaryLength() + number.getIntegerBinaryLength());
 		return unsignedBinaryNumber;
 	}
-	
+
 	public static String assembleSignedBinaryNumber(Number number) {
 		String signedBinaryNumber = "";
-		if(number.isNegative()) {
+		if (number.isNegative()) {
 			signedBinaryNumber = convertToSigned(number.getFullNumberUnsignedBinary());
-		}
-		else {
+		} else {
 			signedBinaryNumber = number.getFullNumberUnsignedBinary();
 		}
 		number.setFullNumberSignedBinary(signedBinaryNumber);
 		return signedBinaryNumber;
 	}
-	
+
+	public static String assembleFixedPointNotation(Number number) {
+		int f = number.getFractionBinaryLength();
+		int w = number.getBinaryLength();
+		String signed = number.getFullNumberSignedBinary();
+		String fixedPoint = "";
+		for (int i = 0; i < w; i++) {
+			if (i == (w - f)) {
+				fixedPoint = fixedPoint + "." + signed.charAt(i);
+			} else {
+				fixedPoint = fixedPoint + signed.charAt(i);
+			}
+		}
+		number.setFullNumberFixedPointNotation(fixedPoint);
+		return fixedPoint;
+	}
+
 	public static String convertToSigned(String unsigned) {
 		String signed = "";
 		int length = unsigned.length();
-		//flip bits
-		for(int i =0;i<length;i++) {
-			switch(unsigned.charAt(i)) {
-			case(49)://1
+		// flip bits
+		for (int i = 0; i < length; i++) {
+			switch (unsigned.charAt(i)) {
+			case (49):// 1
 				signed = signed + "0";
-			break;
-			case(48)://0
+				break;
+			case (48):// 0
 				signed = signed + "1";
-			break;
+				break;
 			default:
 			}
 		}
-		
-		//add 1
-		if(signed.charAt(length-1)==48) { //ends with 0
+
+		// add 1
+		if (signed.charAt(length - 1) == 48) { // ends with 0
 			// replace 0 by 1
-			signed = signed.substring(0, (length-1))+"1";
-		}
-		else { // ends with one
+			signed = signed.substring(0, (length - 1)) + "1";
+		} else { // ends with one
 			boolean carry = true;
 			String temp = "";
-			for(int i=(length-1);i>=0;i--) {
-				if(carry) {
-					if(signed.charAt(i)==49) {
-						carry=true;
+			for (int i = (length - 1); i >= 0; i--) {
+				if (carry) {
+					if (signed.charAt(i) == 49) {
+						carry = true;
+					} else {
+						carry = false;
 					}
-					else {
-						carry=false;
-					}
-					if(carry) {
-						temp = "0"+temp;
-					}
-					else {
-						temp = "1"+temp;
+					if (carry) {
+						temp = "0" + temp;
+					} else {
+						temp = "1" + temp;
 
 					}
-				}
-				else {
-					temp = signed.charAt(i)+temp;
+				} else {
+					temp = signed.charAt(i) + temp;
 				}
 			}
 			signed = temp;
