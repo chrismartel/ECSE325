@@ -22,14 +22,13 @@ public class findPrecision {
 		// parse text files and create Numbers with integer and fraction part in decimal
 		ArrayList<Number> parseX = parseText(bufferx, n);
 		ArrayList<Number> parseY = parseText(buffery, n);
-		System.out.println(convertToSigned("0000"));
 
 		for(Number number: parseX) {
 			convertDecimalFractionToBinary(number);
 			convertDecimalIntegerToBinary(number);
 			assembleUnsignedBinaryNumber(number);
-			System.out.println(assembleUnsignedBinaryNumber(number));
-
+			System.out.println(assembleUnsignedBinaryNumber(number)+" VS "+assembleSignedBinaryNumber(number));
+			
 		}
 		for(Number number: parseY) {
 			convertDecimalFractionToBinary(number);
@@ -129,8 +128,21 @@ public class findPrecision {
 	public static String assembleUnsignedBinaryNumber(Number number) {
 		String unsignedBinaryNumber = "";
 		unsignedBinaryNumber = number.getIntegerBinary()+number.getFractionBinary();
+		number.setFullNumberUnsignedBinary(unsignedBinaryNumber);
 		number.setBinaryLength(number.getFractionBinaryLength()+number.getIntegerBinaryLength());
 		return unsignedBinaryNumber;
+	}
+	
+	public static String assembleSignedBinaryNumber(Number number) {
+		String signedBinaryNumber = "";
+		if(number.isNegative()) {
+			signedBinaryNumber = convertToSigned(number.getFullNumberUnsignedBinary());
+		}
+		else {
+			signedBinaryNumber = number.getFullNumberUnsignedBinary();
+		}
+		number.setFullNumberSignedBinary(signedBinaryNumber);
+		return signedBinaryNumber;
 	}
 	
 	public static String convertToSigned(String unsigned) {
