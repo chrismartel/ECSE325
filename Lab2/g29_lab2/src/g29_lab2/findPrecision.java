@@ -29,9 +29,9 @@ public class findPrecision {
 			assembleUnsignedBinaryNumber(number);
 			assembleSignedBinaryNumber(number);
 			assembleFixedPointNotation(number);
-			System.out.println(assembleFixedPointNotation(number));
+			assembleFullNumberDecimalDouble(number);
+			System.out.println(assembleFullNumberDecimalDouble(number));
 		}
-		System.out.println("FOR Y: \\\n");
 
 		for (Number number : parseY) {
 			convertDecimalFractionToBinary(number);
@@ -39,9 +39,9 @@ public class findPrecision {
 			assembleUnsignedBinaryNumber(number);
 			assembleSignedBinaryNumber(number);
 			assembleFixedPointNotation(number);
-			System.out.println(assembleFixedPointNotation(number));
+			assembleFullNumberDecimalDouble(number);
 
-
+			//System.out.println(assembleFixedPointNotation(number));
 		}
 
 	}
@@ -61,7 +61,7 @@ public class findPrecision {
 
 				if (c == 46) {
 					fractionalCount = true;
-					number.setFullNumberDecimal(number.getFullNumberDecimal() + ".");
+					number.setFullNumberDecimalString(number.getFullNumberDecimalString() + ".");
 
 				} else {
 					if (fractionalCount) {
@@ -75,7 +75,7 @@ public class findPrecision {
 
 						}
 					}
-					number.setFullNumberDecimal(number.getFullNumberDecimal() + ((char) c));
+					number.setFullNumberDecimalString(number.getFullNumberDecimalString() + ((char) c));
 				}
 
 			}
@@ -136,6 +136,17 @@ public class findPrecision {
 		number.setFullNumberUnsignedBinary(unsignedBinaryNumber);
 		number.setBinaryLength(number.getFractionBinaryLength() + number.getIntegerBinaryLength());
 		return unsignedBinaryNumber;
+	}
+	
+	public static double assembleFullNumberDecimalDouble(Number number) {
+		double fullNumberDecimalDouble = Integer.parseInt(number.getInteger());
+		double decimalFraction = Integer.parseInt(number.getFraction())/Math.pow(10, number.getFraction().length());
+		fullNumberDecimalDouble = fullNumberDecimalDouble+decimalFraction;
+		if(number.isNegative()) {
+			fullNumberDecimalDouble = fullNumberDecimalDouble*(-1);
+		}
+		number.setFullNumberDecimalDouble(fullNumberDecimalDouble);
+		return fullNumberDecimalDouble;
 	}
 
 	public static String assembleSignedBinaryNumber(Number number) {
