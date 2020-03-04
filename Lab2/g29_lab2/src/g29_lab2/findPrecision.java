@@ -14,10 +14,18 @@ public class findPrecision {
 	// 'space' --> 32
 	// '.' --> 46
 	public static void main(String args[]) throws IOException {
+		// file readers
 		FileReader inputx = new FileReader("lab2-x.txt");
 		FileReader inputy = new FileReader("lab2-y.txt");
+		// file writers -->will clear the file and write it again
+		FileWriter outputx = new FileWriter("lab2-x-fixed-point.txt", false);
+		FileWriter outputy = new FileWriter("lab2-y-fixed-point.txt", false);
+
 		BufferedReader bufferx = new BufferedReader(inputx);
 		BufferedReader buffery = new BufferedReader(inputy);
+		BufferedWriter bufferwx = new BufferedWriter(outputx);
+		BufferedWriter bufferwy = new BufferedWriter(outputy);
+
 		int n = 1000;
 		int xw;
 		int xf;
@@ -29,10 +37,14 @@ public class findPrecision {
 		int sumf;
 		int outputw;
 		int outputf;
+
 		// parse text files and create Numbers with integer and fraction part in decimal
 		ArrayList<Number> parseX = parseText(bufferx, n);
 		ArrayList<Number> parseY = parseText(buffery, n);
+		bufferx.close();
+		buffery.close();
 
+		// build number representations for array x
 		for (Number number : parseX) {
 			convertDecimalFractionToBinary(number);
 			convertDecimalIntegerToBinary(number);
@@ -40,12 +52,16 @@ public class findPrecision {
 			assembleSignedBinaryNumber(number);
 			assembleFixedPointNotation(number);
 			assembleFullNumberDecimalDouble(number);
+			bufferwx.write(number.getFullNumberFixedPointNotation());
+			bufferwx.newLine();
 		}
+		bufferwx.close();
+		// find max w and f for input x
 		xf = findMaxF(parseX);
 		xw = xf + findMaxI(parseX);
-		System.out.println("Precision for input x\nf: "+xf+"\n"+"w: "+xw+"\n");
-		// xf=7, xw=10
+		System.out.println("Precision for input x\nf: " + xf + "\n" + "w: " + xw + "\n");
 
+		// build number representations for array y
 		for (Number number : parseY) {
 			convertDecimalFractionToBinary(number);
 			convertDecimalIntegerToBinary(number);
@@ -53,24 +69,29 @@ public class findPrecision {
 			assembleSignedBinaryNumber(number);
 			assembleFixedPointNotation(number);
 			assembleFullNumberDecimalDouble(number);
+			bufferwy.write(number.getFullNumberFixedPointNotation());
+			bufferwy.newLine();
 		}
+		bufferwy.close();
+
+		// find max w and f for input y
 		yf = findMaxF(parseY);
 		yw = yf + findMaxI(parseY);
-		System.out.println("Precision for input y\nf: "+yf+"\n"+"w: "+yw+"\n");
-		// yf=7, yw=10
+		System.out.println("Precision for input y\nf: " + yf + "\n" + "w: " + yw + "\n");
 
-		
-		
-		ArrayList<Number> products = computeProductsWF(parseX,parseY,n);
-		ArrayList<Number> sums = computeSums(products,n);
-		for(int i =0;i<n;i++) {
+		// compute all products and partials sums
+		ArrayList<Number> products = computeProductsWF(parseX, parseY, n);
+		ArrayList<Number> sums = computeSums(products, n);
+		for (int i = 0; i < n; i++) {
+			// build all representations for products
 			assembleNumberFromDouble(products.get(i));
 			convertDecimalFractionToBinary(products.get(i));
 			convertDecimalIntegerToBinary(products.get(i));
 			assembleUnsignedBinaryNumber(products.get(i));
 			assembleSignedBinaryNumber(products.get(i));
 			assembleFixedPointNotation(products.get(i));
-			
+
+			// build all representations for sums
 			assembleNumberFromDouble(sums.get(i));
 			convertDecimalFractionToBinary(sums.get(i));
 			convertDecimalIntegerToBinary(sums.get(i));
@@ -78,12 +99,18 @@ public class findPrecision {
 			assembleSignedBinaryNumber(sums.get(i));
 			assembleFixedPointNotation(sums.get(i));
 		}
+		// find max f and w for products
 		productf = findMaxF(products);
-		productw = findMaxI(products)+productf;
+		productw = findMaxI(products) + productf;
+		// find max f and w for sums
 		sumf = findMaxF(sums);
-		sumw = findMaxI(sums)+sumf;
-		System.out.println("Precision for output\nf: "+Math.max(sumf, productf)+"\n"+"w: "+Math.max(sumw, productw)+"\n");
+		sumw = findMaxI(sums) + sumf;
 
+		// find output max w and f
+		outputw = Math.max(sumw, productw);
+		outputf = Math.max(sumf, productf);
+
+		System.out.println("Precision for output\nf: " + outputf + "\n" + "w: " + outputw + "\n");
 
 	}
 
@@ -155,7 +182,7 @@ public class findPrecision {
 		String binary = "";
 		int decimalFractionLength = number.getFraction().length();
 		double decimalFraction = (Long.parseLong(number.getFraction())) / (Math.pow(10, decimalFractionLength));
-		
+
 		while (decimalFraction != 0) {
 			decimalFraction = decimalFraction * 2;
 			if (decimalFraction >= 1) {
@@ -179,13 +206,13 @@ public class findPrecision {
 		number.setBinaryLength(number.getFractionBinaryLength() + number.getIntegerBinaryLength());
 		return unsignedBinaryNumber;
 	}
-	
+
 	public static double assembleFullNumberDecimalDouble(Number number) {
 		double fullNumberDecimalDouble = Integer.parseInt(number.getInteger());
-		double decimalFraction = Integer.parseInt(number.getFraction())/Math.pow(10, number.getFraction().length());
-		fullNumberDecimalDouble = fullNumberDecimalDouble+decimalFraction;
-		if(number.isNegative()) {
-			fullNumberDecimalDouble = fullNumberDecimalDouble*(-1);
+		double decimalFraction = Integer.parseInt(number.getFraction()) / Math.pow(10, number.getFraction().length());
+		fullNumberDecimalDouble = fullNumberDecimalDouble + decimalFraction;
+		if (number.isNegative()) {
+			fullNumberDecimalDouble = fullNumberDecimalDouble * (-1);
 		}
 		number.setFullNumberDecimalDouble(fullNumberDecimalDouble);
 		return fullNumberDecimalDouble;
@@ -217,45 +244,43 @@ public class findPrecision {
 		number.setFullNumberFixedPointNotation(fixedPoint);
 		return fixedPoint;
 	}
-	
-	public static void assembleNumberFromDouble(Number number){
+
+	public static void assembleNumberFromDouble(Number number) {
 		double decimalDouble = number.getFullNumberDecimalDouble();
 		String decimalString = Double.toString(decimalDouble);
 		String integer = "";
 		String fraction = "";
 		int length = decimalString.length();
-		if(decimalString.charAt(0)==45) {
+		if (decimalString.charAt(0) == 45) {
 			number.setNegative(true);
 			decimalString = decimalString.substring(1);
 			length--;
-		}
-		else {
+		} else {
 			number.setNegative(false);
 		}
-		boolean fractionCount=false;
+		boolean fractionCount = false;
 		boolean countEnable = true;
 		char x;
-		for(int i =0;i<length;i++) {
+		for (int i = 0; i < length; i++) {
 			countEnable = true;
 			x = decimalString.charAt(i);
-			if(x==46) {
+			if (x == 46) {
 				countEnable = false;
 				fractionCount = true;
 			}
-			if(countEnable) {
-				if(fractionCount) {
+			if (countEnable) {
+				if (fractionCount) {
 					fraction = fraction + x;
-				}
-				else {
+				} else {
 					integer = integer + x;
 				}
 			}
 		}
 		number.setFraction(fraction);
 		number.setInteger(integer);
-		number.setFullNumberDecimalString(integer+"."+fraction);
-		if(number.isNegative()) {
-			number.setFullNumberDecimalString("-"+number.getFullNumberDecimalString());
+		number.setFullNumberDecimalString(integer + "." + fraction);
+		if (number.isNegative()) {
+			number.setFullNumberDecimalString("-" + number.getFullNumberDecimalString());
 		}
 	}
 
@@ -274,7 +299,6 @@ public class findPrecision {
 			default:
 			}
 		}
-		
 
 		// add 1
 		if (signed.charAt(length - 1) == 48) { // ends with 0
@@ -305,84 +329,84 @@ public class findPrecision {
 		}
 		return signed;
 	}
-	
 
 	public static ArrayList<Number> computeProductsWF(ArrayList<Number> numbersX, ArrayList<Number> numbersY, int n) {
 		ArrayList<Number> products = new ArrayList<Number>();
-		for(int i=0;i<n;i++) {
-			Number number = new Number(); 
-			double product = numbersX.get(i).getFullNumberDecimalDouble()*numbersY.get(i).getFullNumberDecimalDouble();
+		for (int i = 0; i < n; i++) {
+			Number number = new Number();
+			double product = numbersX.get(i).getFullNumberDecimalDouble()
+					* numbersY.get(i).getFullNumberDecimalDouble();
 			number.setFullNumberDecimalDouble(product);
-			number.setBinaryLength(findMulW(numbersX.get(i),numbersY.get(i)));
-			number.setFractionBinaryLength(findMulF(numbersX.get(i),numbersY.get(i)));
-			number.setIntegerBinaryLength(number.getBinaryLength()-number.getFractionBinaryLength());
+			number.setBinaryLength(findMulW(numbersX.get(i), numbersY.get(i)));
+			number.setFractionBinaryLength(findMulF(numbersX.get(i), numbersY.get(i)));
+			number.setIntegerBinaryLength(number.getBinaryLength() - number.getFractionBinaryLength());
 			products.add(number);
 		}
 		return products;
 	}
-	
+
 	public static ArrayList<Number> computeProducts(ArrayList<Number> numbersX, ArrayList<Number> numbersY, int n) {
 		ArrayList<Number> products = new ArrayList<Number>();
-		for(int i=0;i<n;i++) {
-			Number number = new Number(); 
-			double product = numbersX.get(i).getFullNumberDecimalDouble()*numbersY.get(i).getFullNumberDecimalDouble();
+		for (int i = 0; i < n; i++) {
+			Number number = new Number();
+			double product = numbersX.get(i).getFullNumberDecimalDouble()
+					* numbersY.get(i).getFullNumberDecimalDouble();
 			number.setFullNumberDecimalDouble(product);
 			products.add(number);
 		}
 		return products;
 	}
-	
+
 	public static ArrayList<Number> computeSums(ArrayList<Number> products, int n) {
 		ArrayList<Number> sums = new ArrayList<Number>();
-		double totalSum=0;
-		for(int i=0;i<n;i++) {
+		double totalSum = 0;
+		for (int i = 0; i < n; i++) {
 			Number number = new Number();
-			double sum = products.get(i).getFullNumberDecimalDouble()+totalSum;
+			double sum = products.get(i).getFullNumberDecimalDouble() + totalSum;
 			number.setFullNumberDecimalDouble(sum);
 			totalSum = sum;
 			sums.add(number);
 		}
 		return sums;
 	}
-	
+
 	public static int findMaxI(ArrayList<Number> numbers) {
 		int maxI = 0;
-		for(Number number: numbers) {
+		for (Number number : numbers) {
 			int w = number.getIntegerBinaryLength();
-			if(w>maxI)
-				maxI=w;
+			if (w > maxI)
+				maxI = w;
 		}
 		return maxI;
 	}
-	
+
 	public static int findMaxF(ArrayList<Number> numbers) {
 		int maxF = 0;
-		for(Number number: numbers) {
+		for (Number number : numbers) {
 			int f = number.getFractionBinaryLength();
-			if(f>maxF)
-				maxF=f;
+			if (f > maxF)
+				maxF = f;
 		}
 		return maxF;
 	}
-	
+
 	public static int findAddW(Number n1, Number n2) {
-		int w=  Math.max(n1.getBinaryLength(), n2.getBinaryLength())+1;
+		int w = Math.max(n1.getBinaryLength(), n2.getBinaryLength()) + 1;
 		return w;
 	}
-	
+
 	public static int findAddF(Number n1, Number n2) {
-		int f= Math.max(n1.getFractionBinaryLength(),n2.getFractionBinaryLength());
+		int f = Math.max(n1.getFractionBinaryLength(), n2.getFractionBinaryLength());
 		return f;
 	}
-	
-	
+
 	public static int findMulW(Number n1, Number n2) {
-		int w= n1.getBinaryLength()+n2.getBinaryLength();
+		int w = n1.getBinaryLength() + n2.getBinaryLength();
 		return w;
 	}
-	
+
 	public static int findMulF(Number n1, Number n2) {
-		int f=n1.getFractionBinaryLength()+n2.getFractionBinaryLength();
+		int f = n1.getFractionBinaryLength() + n2.getFractionBinaryLength();
 		return f;
 	}
 
