@@ -43,7 +43,7 @@ public class findPrecision {
 		}
 		xf = findMaxF(parseX);
 		xw = xf + findMaxI(parseX);
-		System.out.println("x:  f-->"+xf+", w-->"+xw);
+		System.out.println("Precision for input x\nf: "+xf+"\n"+"w: "+xw+"\n");
 		// xf=7, xw=10
 
 		for (Number number : parseY) {
@@ -56,7 +56,7 @@ public class findPrecision {
 		}
 		yf = findMaxF(parseY);
 		yw = yf + findMaxI(parseY);
-		System.out.println("y:  f-->"+yf+", w-->"+yw);
+		System.out.println("Precision for input y\nf: "+yf+"\n"+"w: "+yw+"\n");
 		// yf=7, yw=10
 
 		
@@ -80,10 +80,9 @@ public class findPrecision {
 		}
 		productf = findMaxF(products);
 		productw = findMaxI(products)+productf;
-		System.out.println("product:  f-->"+productf+", w-->"+productw);
 		sumf = findMaxF(sums);
 		sumw = findMaxI(sums)+sumf;
-		System.out.println("sum:  f-->"+sumf+", w-->"+sumw);
+		System.out.println("Precision for output\nf: "+Math.max(sumf, productf)+"\n"+"w: "+Math.max(sumw, productw)+"\n");
 
 
 	}
