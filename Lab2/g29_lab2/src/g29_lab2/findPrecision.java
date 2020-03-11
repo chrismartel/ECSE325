@@ -52,13 +52,22 @@ public class findPrecision {
 			assembleSignedBinaryNumber(number);
 			assembleFixedPointNotation(number);
 			assembleFullNumberDecimalDouble(number);
-			bufferwx.write(number.getFullNumberFixedPointNotation());
-			bufferwx.newLine();
+
 		}
-		bufferwx.close();
 		// find max w and f for input x
 		xf = findMaxF(parseX);
 		xw = xf + findMaxI(parseX);
+		for(Number number:parseX) {
+			extendFixedPointNotation(number, xw, xf);
+			//bufferwx.write(number.getFullNumberFixedPointNotation());
+			//bufferwx.newLine();
+
+			bufferwx.write(number.getExtendedFixedPointNotation());
+
+			bufferwx.newLine();
+		}
+		bufferwx.close();
+
 		System.out.println("Precision for input x\nf: " + xf + "\n" + "w: " + xw + "\n");
 
 		// build number representations for array y
@@ -69,14 +78,19 @@ public class findPrecision {
 			assembleSignedBinaryNumber(number);
 			assembleFixedPointNotation(number);
 			assembleFullNumberDecimalDouble(number);
-			bufferwy.write(number.getFullNumberFixedPointNotation());
-			bufferwy.newLine();
-		}
-		bufferwy.close();
 
+		}
 		// find max w and f for input y
 		yf = findMaxF(parseY);
 		yw = yf + findMaxI(parseY);
+		for(Number number:parseY) {
+			extendFixedPointNotation(number, yw, yf);
+			//bufferwy.write(number.getFullNumberFixedPointNotation());
+			//bufferwy.newLine();
+			bufferwy.write(number.getExtendedFixedPointNotation());
+			bufferwy.newLine();
+		}
+		bufferwy.close();
 		System.out.println("Precision for input y\nf: " + yf + "\n" + "w: " + yw + "\n");
 
 		// compute all products and partials sums
@@ -236,13 +250,34 @@ public class findPrecision {
 		String fixedPoint = "";
 		for (int i = 0; i < w; i++) {
 			if (i == (w - f)) {
-				fixedPoint = fixedPoint + "." + signed.charAt(i);
+				fixedPoint = fixedPoint + signed.charAt(i);
 			} else {
 				fixedPoint = fixedPoint + signed.charAt(i);
 			}
 		}
 		number.setFullNumberFixedPointNotation(fixedPoint);
 		return fixedPoint;
+	}
+
+	public static void extendFixedPointNotation(Number number, int w, int f) {
+		int currentF = number.getFractionBinaryLength();
+		int diffF = f - currentF;
+		String extendedFixedPoint = number.getFullNumberFixedPointNotation();
+		
+		for(int i = 0;i<diffF;i++) {
+			// add 0 to fraction part
+			extendedFixedPoint = extendedFixedPoint+"0";
+		}
+		int currentW=extendedFixedPoint.length();
+		int diffW = w - currentW;
+		int sign = 0;
+		if(extendedFixedPoint.charAt(0)==1) {
+			sign=1;
+		}
+		for(int i = 0;i<diffW;i++) {
+			extendedFixedPoint=sign+extendedFixedPoint;
+		}
+		number.setExtendedFixedPointNotation(extendedFixedPoint);
 	}
 
 	public static void assembleNumberFromDouble(Number number) {

@@ -8,6 +8,7 @@ public class Number {
 	private double fullNumberDecimalDouble;
 	private String fullNumberSignedBinary;
 	private String fullNumberFixedPointNotation;
+	private String extendedFixedPointNotation;
 
 	private String fullNumberUnsignedBinary;
 
@@ -130,4 +131,13 @@ public class Number {
 	public void setFullNumberDecimalDouble(double fullNumberDecimalDouble) {
 		this.fullNumberDecimalDouble = fullNumberDecimalDouble;
 	}
+
+	public String getExtendedFixedPointNotation() {
+		return extendedFixedPointNotation;
+	}
+
+	public void setExtendedFixedPointNotation(String extendedFixedPointNotation) {
+		this.extendedFixedPointNotation = extendedFixedPointNotation;
+	}
+
 }
