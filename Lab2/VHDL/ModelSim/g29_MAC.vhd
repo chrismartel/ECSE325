@@ -1,0 +1,64 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+entity g29_MAC is
+	port( x : in std_logic_vector(9 downto 0);							--first input, you have to first calculate length
+			y : in std_logic_vector(9 downto 0);   						--second input
+			N : in std_logic_vector(9 downto 0);						--total number of inputs
+			clk : in std_logic; 								--clock
+			rst : in std_logic;								--asynchronous reset acive high
+			mac : out std_logic_vector(22 downto 0); 					--output of MAC unit, replace the length
+			ready : out std_logic;								--denotes the validity of the mac signal
+			xMAC : out std_logic_vector(9 downto 0); 
+			yMAC : out std_logic_vector(9 downto 0)); 
+
+end g29_MAC;
+
+architecture myMAC of g29_MAC is
+	signal sum : signed (22 downto 0);								--sum of MAC
+	signal product : signed (22 downto 0);								--poduct of MAC
+	signal count : unsigned(9 downto 0);							--count of MAC 1...N
+
+	--signal extendedProduct : signed(22 downto 0);	
+	--signal extendedSum     : signed(22 downto 0);
+
+	begin
+		macProcess: process(clk,rst)
+			begin
+				if rst = '1' then							--asynchronous reset
+						sum <=(others => '0');					--reset sum
+						count <= (others => '0');				--reset count
+						ready<='0';
+						product <= (others => '0');				--set ready back to 0
+						--extendedProduct <= (others => '0');	
+						--extendedSum <= (others => '0');	
+						xMAC <= (others => '0');	
+						yMAC <= (others => '0');
+						mac<=std_logic_vector(sum);
+				elsif clk'event and clk = '1' then 					--synchronous process with clock rising edge
+				
+						count<=count +1;					--increment count
+					
+					if count <= unsigned(N) then						--if count is smaller than the number of inputs
+		
+						--product<=signed(y)*signed(x);				--compute partial product
+						product<=resize((signed(y)*signed(x)),23);
+						--extendedProduct <= resize(signed(product),23);
+				
+						--extendedSum <=resize((sum+extendedProduct),23);
+						sum<=sum+product;					--compute partial sum
+						mac<=std_logic_vector(sum);				--set MAC to the partial sum						
+						xMAC <= x;
+						yMAC <= y;	
+						
+					elsif count > unsigned(N) then						--if count is N, all numbers were summed, MAC id done
+
+						ready<='1';						--MAC is done so set ready to 1 to indicate end
+						
+					end if;
+					
+				end if;
+			end process;
+	
+end myMac;

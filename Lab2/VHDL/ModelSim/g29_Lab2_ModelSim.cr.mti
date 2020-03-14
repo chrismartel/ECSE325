@@ -1,0 +1,20 @@
+E:/ECSE325/Lab2/ModelSim/g29_MAC.vhd {1 {vcom -work work -2002 -explicit -stats=none E:/ECSE325/Lab2/ModelSim/g29_MAC.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity g29_MAC
+-- Compiling architecture myMAC of g29_MAC
+
+} {} {}} E:/ECSE325/Lab2/ModelSim/g29_MAC_tb.vhd {1 {vcom -work work -2002 -explicit -stats=none E:/ECSE325/Lab2/ModelSim/g29_MAC_tb.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Loading package std_logic_textio
+-- Compiling entity g29_MAC_tb
+-- Compiling architecture test of g29_MAC_tb
+
+} {} {}}
