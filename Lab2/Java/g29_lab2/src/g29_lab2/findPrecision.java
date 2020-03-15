@@ -44,6 +44,7 @@ public class findPrecision {
 		bufferx.close();
 		buffery.close();
 
+
 		// build number representations for array x
 		for (Number number : parseX) {
 			convertDecimalFractionToBinary(number);
@@ -68,7 +69,7 @@ public class findPrecision {
 		}
 		bufferwx.close();
 
-		System.out.println("Precision for input x\nf: " + xf + "\n" + "w: " + xw + "\n");
+		System.out.println("Precision for whole list input x\nf: " + xf + "\n" + "w: " + xw + "\n");
 
 		// build number representations for array y
 		for (Number number : parseY) {
@@ -91,7 +92,7 @@ public class findPrecision {
 			bufferwy.newLine();
 		}
 		bufferwy.close();
-		System.out.println("Precision for input y\nf: " + yf + "\n" + "w: " + yw + "\n");
+		System.out.println("Precision for whole list input y\nf: " + yf + "\n" + "w: " + yw + "\n");
 
 		// compute all products and partials sums
 		ArrayList<Number> products = computeProductsWF(parseX, parseY, n);
@@ -126,8 +127,27 @@ public class findPrecision {
 		outputw = Math.max(sumw, productw);
 		outputf = Math.max(sumf, productf);
 
-		System.out.println("Precision for output\nf: " + outputf + "\n" + "w: " + outputw + "\n");
-
+		System.out.println("Precision for whole list output\nf: " + outputf + "\n" + "w: " + outputw + "\n");
+		
+		
+		
+		
+		////////EXERCICE///////////
+		System.out.println("BATCH #1:\n");
+		findBatchPrecision(0,200,parseX,parseY,new FileWriter("batch1-x.txt",false), new FileWriter("batch1-y.txt",false));
+		
+		System.out.println("BATCH #2:\n");
+		findBatchPrecision(200,200,parseX,parseY,new FileWriter("batch1-x.txt",false), new FileWriter("batch1-y.txt",false));
+		
+		System.out.println("BATCH #3:\n");
+		findBatchPrecision(400,200,parseX,parseY,new FileWriter("batch1-x.txt",false), new FileWriter("batch1-y.txt",false));
+		
+		System.out.println("BATCH #4:\n");
+		findBatchPrecision(600,200,parseX,parseY,new FileWriter("batch1-x.txt",false), new FileWriter("batch1-y.txt",false));
+		
+		System.out.println("BATCH #5:\n");
+		findBatchPrecision(800,200,parseX,parseY,new FileWriter("batch1-x.txt",false), new FileWriter("batch1-y.txt",false));
+		
 	}
 
 	public static ArrayList<Number> parseText(BufferedReader reader, int n) throws IOException {
@@ -445,6 +465,89 @@ public class findPrecision {
 	public static int findMulF(Number n1, Number n2) {
 		int f = n1.getFractionBinaryLength() + n2.getFractionBinaryLength();
 		return f;
+	}
+	
+	public static void findBatchPrecision(int begin, int n, ArrayList<Number> parseX, ArrayList<Number> parseY, FileWriter outputx, FileWriter outputy) throws IOException {
+
+		int xw;
+		int xf;
+		int yw;
+		int yf;
+		int productw;
+		int productf;
+		int sumw;
+		int sumf;
+		int outputw;
+		int outputf;
+		
+		ArrayList<Number> batchX = new ArrayList<Number>();
+		ArrayList<Number> batchY = new ArrayList<Number>();
+		for(int i = begin; i< (begin+n);i++) {
+			batchX.add(parseX.get(i));
+			batchY.add(parseY.get(i));
+		}
+
+		BufferedWriter bufferwx = new BufferedWriter(outputx);
+		BufferedWriter bufferwy = new BufferedWriter(outputy);
+		// find max w and f for input x
+		xf = findMaxF(batchX);
+		xw = xf + findMaxI(batchX);
+		for (Number number : batchX) {
+			extendFixedPointNotation(number, xw, xf);
+			// bufferwx.write(number.getFullNumberFixedPointNotation());
+			// bufferwx.newLine();
+			bufferwx.write(number.getExtendedFixedPointNotation());
+			bufferwx.newLine();
+		}
+		bufferwx.close();
+
+		System.out.println("Precision for input x\nf: " + xf + "\n" + "w: " + xw + "\n");
+
+		// find max w and f for input y
+		yf = findMaxF(batchY);
+		yw = yf + findMaxI(batchY);
+		for (Number number : batchY) {
+			extendFixedPointNotation(number, yw, yf);
+			// bufferwy.write(number.getFullNumberFixedPointNotation());
+			// bufferwy.newLine();
+			bufferwy.write(number.getExtendedFixedPointNotation());
+			bufferwy.newLine();
+		}
+		bufferwy.close();
+		System.out.println("Precision for input y\nf: " + yf + "\n" + "w: " + yw + "\n");
+
+		// compute all products and partials sums
+		ArrayList<Number> products = computeProductsWF(batchX, batchY, n);
+		ArrayList<Number> sums = computeSums(products, n);
+		for (int i = 0; i < n; i++) {
+			// build all representations for products
+			assembleNumberFromDouble(products.get(i));
+			convertDecimalFractionToBinary(products.get(i));
+			convertDecimalIntegerToBinary(products.get(i));
+			assembleUnsignedBinaryNumber(products.get(i));
+			assembleSignedBinaryNumber(products.get(i));
+			assembleFixedPointNotation(products.get(i));
+
+			// build all representations for sums
+			assembleNumberFromDouble(sums.get(i));
+			convertDecimalFractionToBinary(sums.get(i));
+			convertDecimalIntegerToBinary(sums.get(i));
+			assembleUnsignedBinaryNumber(sums.get(i));
+			assembleSignedBinaryNumber(sums.get(i));
+			assembleFixedPointNotation(sums.get(i));
+		}
+		// find max f and w for products
+		productf = findMaxF(products);
+		productw = findMaxI(products) + productf;
+		// find max f and w for sums
+		sumf = findMaxF(sums);
+		sumw = findMaxI(sums) + sumf;
+
+		// find output max w and f
+		outputw = Math.max(sumw, productw);
+		outputf = Math.max(sumf, productf);
+
+		System.out.println("Precision for output\nf: " + outputf + "\n" + "w: " + outputw + "\n");
 	}
 
 }
