@@ -134,19 +134,19 @@ public class findPrecision {
 		
 		////////EXERCICE///////////
 		System.out.println("BATCH #1:\n");
-		findBatchPrecision(0,200,parseX,parseY,new FileWriter("batch1-x.txt",false), new FileWriter("batch1-y.txt",false));
+		findBatchPrecision(0,200,parseX,parseY,new FileWriter("C:\\Users\\Chris\\git\\ECSE325\\Lab2\\Java\\g29_lab2\\src\\batches\\batch1\\batch1-x.txt",false), new FileWriter("C:\\Users\\Chris\\git\\ECSE325\\Lab2\\Java\\g29_lab2\\src\\batches\\batch1\\batch1-y.txt",false));
 		
 		System.out.println("BATCH #2:\n");
-		findBatchPrecision(200,200,parseX,parseY,new FileWriter("batch1-x.txt",false), new FileWriter("batch1-y.txt",false));
+		findBatchPrecision(200,200,parseX,parseY,new FileWriter("C:\\Users\\Chris\\git\\ECSE325\\Lab2\\Java\\g29_lab2\\src\\batches\\batch2\\batch2-x.txt",false), new FileWriter("C:\\Users\\Chris\\git\\ECSE325\\Lab2\\Java\\g29_lab2\\src\\batches\\batch2\\batch2-y.txt",false));
 		
 		System.out.println("BATCH #3:\n");
-		findBatchPrecision(400,200,parseX,parseY,new FileWriter("batch1-x.txt",false), new FileWriter("batch1-y.txt",false));
+		findBatchPrecision(400,200,parseX,parseY,new FileWriter("C:\\Users\\Chris\\git\\ECSE325\\Lab2\\Java\\g29_lab2\\src\\batches\\batch3\\batch3-x.txt",false), new FileWriter("C:\\Users\\Chris\\git\\ECSE325\\Lab2\\Java\\g29_lab2\\src\\batches\\batch3\\batch3-y.txt",false));
 		
 		System.out.println("BATCH #4:\n");
-		findBatchPrecision(600,200,parseX,parseY,new FileWriter("batch1-x.txt",false), new FileWriter("batch1-y.txt",false));
+		findBatchPrecision(600,200,parseX,parseY,new FileWriter("C:\\Users\\Chris\\git\\ECSE325\\Lab2\\Java\\g29_lab2\\src\\batches\\batch4\\batch4-x.txt",false), new FileWriter("C:\\Users\\Chris\\git\\ECSE325\\Lab2\\Java\\g29_lab2\\src\\batches\\batch4\\batch4-y.txt",false));
 		
 		System.out.println("BATCH #5:\n");
-		findBatchPrecision(800,200,parseX,parseY,new FileWriter("batch1-x.txt",false), new FileWriter("batch1-y.txt",false));
+		findBatchPrecision(800,200,parseX,parseY,new FileWriter("C:\\Users\\Chris\\git\\ECSE325\\Lab2\\Java\\g29_lab2\\src\\batches\\batch5\\batch5-x.txt",false), new FileWriter("C:\\Users\\Chris\\git\\ECSE325\\Lab2\\Java\\g29_lab2\\src\\batches\\batch5\\batch5-y.txt",false));
 		
 	}
 
