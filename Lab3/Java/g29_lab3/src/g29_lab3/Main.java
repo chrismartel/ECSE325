@@ -23,17 +23,15 @@ public class Main {
 		ArrayList<Number> numberInputs = Converting.convertNumbersToFixedPointSingleLine(input, converted_input,inputW,intputF);
 		double[] inputs = new double[numberInputs.size()];
 		for(int i = 0;i<numberInputs.size();i++) {
-			inputs[i] = numberInputs.get(i).getFullNumberDecimalDouble();
+			inputs[i] = numberInputs.get(i).getExtendedNumberDecimalDouble();
 		}
 		
 		FileReader coeff = new FileReader("src/lab3-coef.txt");
 		FileWriter converted_coeff = new FileWriter("src/lab3-coef-converted.txt",false);
-		System.out.println("WAAAA\n");
 		ArrayList<Number> numberCoeffs = Converting.convertNumbersToFixedPointMultipleLines(coeff, converted_coeff,coeffW,coeffF);
 		double[] coeffs = new double[numberCoeffs.size()];
 		for(int i = 0;i<numberCoeffs.size();i++) {
-			System.out.println(numberCoeffs.get(i).getFullNumberDecimalDouble());
-			coeffs[i] = numberCoeffs.get(i).getFullNumberDecimalDouble();
+			coeffs[i] = numberCoeffs.get(i).getExtendedNumberDecimalDouble();
 		}
 		
 		double[] outputs = FIR.firNthOrderFilter(inputs, coeffs, 25);

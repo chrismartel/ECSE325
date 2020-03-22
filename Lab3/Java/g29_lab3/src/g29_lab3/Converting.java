@@ -34,8 +34,6 @@ public class Converting {
 				fullNumberDecimalString = fullNumberDecimalString + fraction;
 				number.setFullNumberDecimalString(fullNumberDecimalString);
 				number.wholeBuild(w, f);
-				System.out.println(
-						number.getExtendedFixedPointNotation() + " vs " + number.getFullNumberFixedPointNotation());
 				writer.write(number.getExtendedFixedPointNotation());
 				writer.newLine();
 				Number newNumber = number;
@@ -132,9 +130,6 @@ public class Converting {
 			number.setFraction(fraction);
 			number.setFullNumberDecimalString(fullNumberDecimalString);
 			number.wholeBuild(w, f);
-			System.out.println(
-					number.getExtendedFixedPointNotation() + " vs " + number.getFullNumberFixedPointNotation());
-			System.out.println(number.getFullNumberDecimalDouble());
 			writer.write(number.getExtendedFixedPointNotation());
 			writer.newLine();
 			Number newNumber = number;

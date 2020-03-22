@@ -6,9 +6,12 @@ public class Number {
 	private boolean isNegative;
 	private String fullNumberDecimalString;
 	private double fullNumberDecimalDouble;
+	private double extendedNumberDecimalDouble;
 	private String fullNumberSignedBinary;
 	private String fullNumberFixedPointNotation;
 	private String extendedFixedPointNotation;
+	private int extendedW;
+	private int extendedF;
 	private String fullNumberUnsignedBinary;
 	private String integerBinary;
 	private String fractionBinary;
@@ -104,12 +107,37 @@ public class Number {
 	public void setExtendedFixedPointNotation(String extendedFixedPointNotation) {
 		this.extendedFixedPointNotation = extendedFixedPointNotation;
 	}
-	
-	// compute integer binary representation from integer decimal binary representation
-	public String convertDecimalIntegerToBinary() throws Exception{
+
+	public double getExtendedNumberDecimalDouble() {
+		return extendedNumberDecimalDouble;
+	}
+
+	public void setExtendedNumberDecimalDouble(double extendedNumberDecimalDouble) {
+		this.extendedNumberDecimalDouble = extendedNumberDecimalDouble;
+	}
+
+	public int getExtendedF() {
+		return extendedF;
+	}
+
+	public void setExtendedF(int extendedF) {
+		this.extendedF = extendedF;
+	}
+
+	public int getExtendedW() {
+		return extendedW;
+	}
+
+	public void setExtendedW(int extendedW) {
+		this.extendedW = extendedW;
+	}
+
+	// compute integer binary representation from integer decimal binary
+	// representation
+	public String convertDecimalIntegerToBinary() throws Exception {
 		String binary = "";
 		String decimalIntegerString = this.getInteger();
-		if(decimalIntegerString==null) {
+		if (decimalIntegerString == null) {
 			throw new Exception("Integer decimal string must be computed first!");
 		}
 		int decimalIntegerInt = Integer.parseInt(decimalIntegerString);
@@ -123,17 +151,18 @@ public class Number {
 
 	}
 
-	// compute fraction binary representation from fraction decimal binary representation
-	public String convertDecimalFractionToBinary() throws Exception{
+	// compute fraction binary representation from fraction decimal binary
+	// representation
+	public String convertDecimalFractionToBinary() throws Exception {
 		String binary = "";
 		int decimalFractionLength = this.getFraction().length();
 		String decimalFractionString = this.getFraction();
-		if(decimalFractionString==null) {
+		if (decimalFractionString == null) {
 			throw new Exception("Fraction decimal string must be computed first!");
 		}
 		double decimalFraction = (Double.parseDouble(decimalFractionString)) / (Math.pow(10, decimalFractionLength));
 
-		while (decimalFraction != 0 && binary.length()<=20) {
+		while (decimalFraction != 0 && binary.length() <= 20) {
 			decimalFraction = decimalFraction * 2;
 			if (decimalFraction >= 1) {
 				decimalFraction = decimalFraction - 1;
@@ -147,24 +176,25 @@ public class Number {
 		return binary;
 
 	}
-	
-	//compute unsigned binary representation
-	public String assembleUnsignedBinaryNumber() throws Exception{
+
+	// compute unsigned binary representation
+	public String assembleUnsignedBinaryNumber() throws Exception {
 		String unsignedBinaryNumber = "";
 		String integerBinary = this.getIntegerBinary();
 		String fractionBinary = this.getFractionBinary();
-		if(integerBinary==null || fractionBinary==null) {
-			throw new Exception("Integer binary representation and fraction binary representation must be computed first!");
+		if (integerBinary == null || fractionBinary == null) {
+			throw new Exception(
+					"Integer binary representation and fraction binary representation must be computed first!");
 		}
 		unsignedBinaryNumber = integerBinary + fractionBinary;
 		this.setFullNumberUnsignedBinary(unsignedBinaryNumber);
 		return unsignedBinaryNumber;
 	}
-	
+
 	// compute signed binary representation from unsigned representation
-	public String assembleSignedBinaryNumber() throws Exception{
+	public String assembleSignedBinaryNumber() throws Exception {
 		String signedBinaryNumber = "";
-		if(this.getFullNumberUnsignedBinary()==null) {
+		if (this.getFullNumberUnsignedBinary() == null) {
 			throw new Exception("Unsigned binary representation must be computed first!");
 		}
 		if (this.isNegative()) {
@@ -175,13 +205,14 @@ public class Number {
 		this.setFullNumberSignedBinary(signedBinaryNumber);
 		return signedBinaryNumber;
 	}
-	
+
 	// compute decimal double representation from strings
-	public double assembleFullNumberDecimalDouble() throws Exception{
+	public double assembleFullNumberDecimalDouble() throws Exception {
 		String integer = this.getInteger();
 		String fraction = this.getFraction();
-		if(integer==null || fraction==null) {
-			throw new Exception("Integer decimal representation and fraction decimal representation must be computed first!");
+		if (integer == null || fraction == null) {
+			throw new Exception(
+					"Integer decimal representation and fraction decimal representation must be computed first!");
 		}
 		double fullNumberDecimalDouble = Double.parseDouble(integer);
 		double decimalFraction = Double.parseDouble(fraction) / (double) (Math.pow(10, fraction.length()));
@@ -194,9 +225,11 @@ public class Number {
 	}
 
 	// compute fixed point binary representation from signed representation
-	public String assembleFixedPointNotation() throws Exception{
-		if(this.getFractionBinary()==null || this.getIntegerBinary()==null || this.getFullNumberSignedBinary()==null) {
-			throw new Exception("Integer binary representation, fraction binary representation and signed representation must be computed first!");
+	public String assembleFixedPointNotation() throws Exception {
+		if (this.getFractionBinary() == null || this.getIntegerBinary() == null
+				|| this.getFullNumberSignedBinary() == null) {
+			throw new Exception(
+					"Integer binary representation, fraction binary representation and signed representation must be computed first!");
 		}
 		int f = this.getFractionBinary().length();
 		int w = this.getFullNumberSignedBinary().length();
@@ -212,18 +245,22 @@ public class Number {
 		this.setFullNumberFixedPointNotation(fixedPoint);
 		return fixedPoint;
 	}
-	
+
 	// extend the fixed point binary representation
 	public void extendFixedPointNotation(int w, int f) throws Exception {
-		if(this.getFractionBinary()==null || this.getIntegerBinary()==null || this.getFullNumberSignedBinary()==null) {
-			throw new Exception("Integer binary representation, fraction binary representation and signed representation must be computed first!");
+		if (this.getFractionBinary() == null || this.getIntegerBinary() == null
+				|| this.getFullNumberSignedBinary() == null) {
+			throw new Exception(
+					"Integer binary representation, fraction binary representation and signed representation must be computed first!");
 		}
+		this.setExtendedF(f);
+		this.setExtendedW(w);
 		int currentF = this.getFractionBinary().length();
 
 		int diffF = f - currentF;
 		String extendedFixedPoint = this.getFullNumberFixedPointNotation();
-		
-		if(diffF>=0) {
+
+		if (diffF >= 0) {
 			for (int i = 0; i < diffF; i++) {
 				// add 0 to fraction part
 				extendedFixedPoint = extendedFixedPoint + "0";
@@ -233,11 +270,11 @@ public class Number {
 		else {
 			int i = this.getIntegerBinary().length();
 			String iPart = extendedFixedPoint.substring(0, i);
-			extendedFixedPoint = iPart+extendedFixedPoint.substring(i,(i+f));
+			extendedFixedPoint = iPart + extendedFixedPoint.substring(i, (i + f));
 		}
 
 		int currentW = extendedFixedPoint.length();
-		if(w<currentW) {
+		if (w < currentW) {
 			throw new Exception("w must be greater than the current full length");
 		}
 		int diffW = w - currentW;
@@ -251,8 +288,9 @@ public class Number {
 		this.setExtendedFixedPointNotation(extendedFixedPoint);
 	}
 
-	// set fraction, integer and whole string representation of number from double representation
-	public void assembleNumberFromDouble() throws Exception{
+	// set fraction, integer and whole string representation of number from double
+	// representation
+	public void assembleNumberFromDouble() throws Exception {
 		double decimalDouble = this.getFullNumberDecimalDouble();
 		String decimalString = Double.toString(decimalDouble);
 		String integer = "";
@@ -289,6 +327,49 @@ public class Number {
 		if (this.isNegative()) {
 			this.setFullNumberDecimalString("-" + this.getFullNumberDecimalString());
 		}
+	}
+
+	// compute new double value from the extended fixed point notation
+	public double assembleExtendedDouble() throws Exception {
+		String fixedPoint = this.getExtendedFixedPointNotation();
+		double extendedDouble = 0;
+		int W = this.getExtendedW();
+		int F = this.getExtendedF();
+		int I = W-F;
+		if (fixedPoint == null) {
+			throw new Exception("extended fixed point representation must be computed first");
+		}
+		String integerPart = fixedPoint.substring(0, I);
+		String fractionPart = fixedPoint.substring(I, I+F);
+		String c = "";
+		
+		//integer part
+		for(int i = 0;i<I;i++) {
+			c = Character.toString(integerPart.charAt(i));
+			//first char
+			if(i==0) {
+				// if negative
+				if(c.contentEquals("1")) {
+					extendedDouble = extendedDouble - Math.pow(2, (I-1));
+				}
+				// if positive do nothing
+			}
+			else {
+				if(c=="1") {
+					extendedDouble = extendedDouble + Math.pow(2, (I-i-1));
+				}
+			}
+		}
+		
+		//fraction part
+		for(int i=0;i<F;i++) {
+			c = Character.toString(fractionPart.charAt(i));
+			if(c.equals("1")) {
+				extendedDouble = extendedDouble + Math.pow(0.5, (i+1));
+			}
+		}
+		this.setExtendedNumberDecimalDouble(extendedDouble);
+		return extendedDouble;
 	}
 
 	public static String convertToSigned(String unsigned) {
@@ -336,18 +417,17 @@ public class Number {
 		}
 		return signed;
 	}
-	
-	//build all number representations from decimal string
+
+	// build all number representations from decimal string
 	public void wholeBuild(int w, int f) throws Exception {
-		//impossible to build
-		if(this.getFullNumberDecimalDouble()==-999999 && this.getFullNumberDecimalString()==null) {
+		// impossible to build
+		if (this.getFullNumberDecimalDouble() == -999999 && this.getFullNumberDecimalString() == null) {
 			throw new Exception("Build impossible: need either double or string decimal representation");
-		}
-		else {
-			if(this.getFullNumberDecimalDouble()==-999999) {
+		} else {
+			if (this.getFullNumberDecimalDouble() == -999999) {
 				this.assembleFullNumberDecimalDouble();
 			}
-			if(this.getFullNumberDecimalString()==null) {
+			if (this.getFullNumberDecimalString() == null) {
 				this.assembleNumberFromDouble();
 			}
 		}
@@ -357,7 +437,7 @@ public class Number {
 		this.assembleSignedBinaryNumber();
 		this.assembleFixedPointNotation();
 		this.extendFixedPointNotation(w, f);
+		this.assembleExtendedDouble();
 	}
-	
 
 }
