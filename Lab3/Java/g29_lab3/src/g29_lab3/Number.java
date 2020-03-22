@@ -131,9 +131,9 @@ public class Number {
 		if(decimalFractionString==null) {
 			throw new Exception("Fraction decimal string must be computed first!");
 		}
-		double decimalFraction = (Long.parseLong(decimalFractionString)) / (Math.pow(10, decimalFractionLength));
+		double decimalFraction = (Double.parseDouble(decimalFractionString)) / (Math.pow(10, decimalFractionLength));
 
-		while (decimalFraction != 0) {
+		while (decimalFraction != 0 && binary.length()<=20) {
 			decimalFraction = decimalFraction * 2;
 			if (decimalFraction >= 1) {
 				decimalFraction = decimalFraction - 1;
@@ -183,8 +183,8 @@ public class Number {
 		if(integer==null || fraction==null) {
 			throw new Exception("Integer decimal representation and fraction decimal representation must be computed first!");
 		}
-		double fullNumberDecimalDouble = Integer.parseInt(integer);
-		double decimalFraction = Integer.parseInt(fraction) / Math.pow(10, fraction.length());
+		double fullNumberDecimalDouble = Double.parseDouble(integer);
+		double decimalFraction = Double.parseDouble(fraction) / (double) (Math.pow(10, fraction.length()));
 		fullNumberDecimalDouble = fullNumberDecimalDouble + decimalFraction;
 		if (this.isNegative()) {
 			fullNumberDecimalDouble = fullNumberDecimalDouble * (-1);

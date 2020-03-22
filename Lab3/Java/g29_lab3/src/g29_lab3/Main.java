@@ -12,7 +12,11 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 		FileReader input = new FileReader("src/lab3-In.txt");
 		FileWriter converted_input = new FileWriter("src/lab3-In-converted.txt",false);
-		ArrayList<Number> inputs = Converting.convertTextInputsToFixedPoint(input, converted_input,16,15);
+		ArrayList<Number> inputs = Converting.convertNumbersToFixedPointSingleLine(input, converted_input,16,15);
+		FileReader coeff = new FileReader("src/lab3-coef.txt");
+		FileWriter converted_coeff = new FileWriter("src/lab3-coef-converted.txt",false);
+		System.out.println("WAAAA\n");
+		ArrayList<Number> coeffs = Converting.convertNumbersToFixedPointMultipleLines(coeff, converted_coeff,16,15);
 	}
 
 
