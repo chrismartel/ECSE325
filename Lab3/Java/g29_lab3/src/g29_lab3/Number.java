@@ -233,7 +233,7 @@ public class Number {
 		else {
 			int i = this.getIntegerBinary().length();
 			String iPart = extendedFixedPoint.substring(0, i);
-			extendedFixedPoint = iPart+extendedFixedPoint.substring(i,(i+15));
+			extendedFixedPoint = iPart+extendedFixedPoint.substring(i,(i+f));
 		}
 
 		int currentW = extendedFixedPoint.length();

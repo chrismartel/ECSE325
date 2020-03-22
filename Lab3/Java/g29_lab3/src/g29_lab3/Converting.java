@@ -27,8 +27,8 @@ public class Converting {
 		while ((read = reader.read()) != -1) {
 			if (read == 32) { // space " "
 				fractionalCount = false;
-				if (fraction.length() > 10) {
-					fraction = fraction.substring(0, 15);
+				if (fraction.length() > 20) {
+					fraction = fraction.substring(0, 20);
 				}
 				number.setFraction(fraction);
 				fullNumberDecimalString = fullNumberDecimalString + fraction;
