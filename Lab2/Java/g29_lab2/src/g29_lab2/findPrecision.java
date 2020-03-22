@@ -114,8 +114,9 @@ public class findPrecision {
 			assembleSignedBinaryNumber(sums.get(i));
 			assembleFixedPointNotation(sums.get(i));
 			
-			//System.out.println(sums.get(i).getFullNumberFixedPointNotation());
 		}
+		System.out.println("Expected Output: "+sums.get(999).getFullNumberFixedPointNotation()+"\n");
+
 		// find max f and w for products
 		productf = findMaxF(products);
 		productw = findMaxI(products) + productf;
@@ -133,19 +134,19 @@ public class findPrecision {
 		
 		
 		////////EXERCICE///////////
-		System.out.println("BATCH #1:\n");
+		System.out.println("BATCH #1: ");
 		findBatchPrecision(0,200,parseX,parseY,new FileWriter("C:\\Users\\Chris\\git\\ECSE325\\Lab2\\Java\\g29_lab2\\src\\batches\\batch1\\batch1-x.txt",false), new FileWriter("C:\\Users\\Chris\\git\\ECSE325\\Lab2\\Java\\g29_lab2\\src\\batches\\batch1\\batch1-y.txt",false));
 		
-		System.out.println("BATCH #2:\n");
+		System.out.println("BATCH #2: ");
 		findBatchPrecision(200,200,parseX,parseY,new FileWriter("C:\\Users\\Chris\\git\\ECSE325\\Lab2\\Java\\g29_lab2\\src\\batches\\batch2\\batch2-x.txt",false), new FileWriter("C:\\Users\\Chris\\git\\ECSE325\\Lab2\\Java\\g29_lab2\\src\\batches\\batch2\\batch2-y.txt",false));
 		
-		System.out.println("BATCH #3:\n");
+		System.out.println("BATCH #3: ");
 		findBatchPrecision(400,200,parseX,parseY,new FileWriter("C:\\Users\\Chris\\git\\ECSE325\\Lab2\\Java\\g29_lab2\\src\\batches\\batch3\\batch3-x.txt",false), new FileWriter("C:\\Users\\Chris\\git\\ECSE325\\Lab2\\Java\\g29_lab2\\src\\batches\\batch3\\batch3-y.txt",false));
 		
-		System.out.println("BATCH #4:\n");
+		System.out.println("BATCH #4: ");
 		findBatchPrecision(600,200,parseX,parseY,new FileWriter("C:\\Users\\Chris\\git\\ECSE325\\Lab2\\Java\\g29_lab2\\src\\batches\\batch4\\batch4-x.txt",false), new FileWriter("C:\\Users\\Chris\\git\\ECSE325\\Lab2\\Java\\g29_lab2\\src\\batches\\batch4\\batch4-y.txt",false));
 		
-		System.out.println("BATCH #5:\n");
+		System.out.println("BATCH #5: ");
 		findBatchPrecision(800,200,parseX,parseY,new FileWriter("C:\\Users\\Chris\\git\\ECSE325\\Lab2\\Java\\g29_lab2\\src\\batches\\batch5\\batch5-x.txt",false), new FileWriter("C:\\Users\\Chris\\git\\ECSE325\\Lab2\\Java\\g29_lab2\\src\\batches\\batch5\\batch5-y.txt",false));
 		
 	}
@@ -501,7 +502,7 @@ public class findPrecision {
 		}
 		bufferwx.close();
 
-		System.out.println("Precision for input x\nf: " + xf + "\n" + "w: " + xw + "\n");
+		//System.out.println("Precision for input x\nf: " + xf + "\n" + "w: " + xw + "\n");
 
 		// find max w and f for input y
 		yf = findMaxF(batchY);
@@ -514,7 +515,7 @@ public class findPrecision {
 			bufferwy.newLine();
 		}
 		bufferwy.close();
-		System.out.println("Precision for input y\nf: " + yf + "\n" + "w: " + yw + "\n");
+		//System.out.println("Precision for input y\nf: " + yf + "\n" + "w: " + yw + "\n");
 
 		// compute all products and partials sums
 		ArrayList<Number> products = computeProductsWF(batchX, batchY, n);
@@ -547,7 +548,8 @@ public class findPrecision {
 		outputw = Math.max(sumw, productw);
 		outputf = Math.max(sumf, productf);
 
-		System.out.println("Precision for output\nf: " + outputf + "\n" + "w: " + outputw + "\n");
+		//System.out.println("Precision for output\nf: " + outputf + "\n" + "w: " + outputw + "\n");
+		System.out.println(sums.get(199).getFullNumberFixedPointNotation()+"\n");
 	}
 
 }
