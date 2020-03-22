@@ -1,4 +1,5 @@
 package g29_lab3;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -35,9 +36,14 @@ public class Main {
 		}
 		
 		double[] outputs = FIR.firNthOrderFilter(inputs, coeffs, 25);
+		FileWriter outputText = new FileWriter("src/lab3-out.txt",false);
+		BufferedWriter bw = new BufferedWriter(outputText);
 		for(double output: outputs) {
+			bw.write(Double.toString(output));
+			bw.newLine();
 			System.out.println(output);
 		}
+		bw.close();
 	}
 
 
