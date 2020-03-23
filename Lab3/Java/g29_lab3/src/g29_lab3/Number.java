@@ -1,5 +1,9 @@
 package g29_lab3;
 
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.ArrayList;
+
 public class Number {
 	private String integer;
 	private String fraction;
@@ -249,7 +253,7 @@ public class Number {
 	// extend the fixed point binary representation
 	public void extendFixedPointNotation(int w, int f) throws Exception {
 		if (this.getFractionBinary() == null || this.getIntegerBinary() == null
-				|| this.getFullNumberSignedBinary() == null) {
+				|| this.getFullNumberFixedPointNotation() == null) {
 			throw new Exception(
 					"Integer binary representation, fraction binary representation and signed representation must be computed first!");
 		}
@@ -438,6 +442,47 @@ public class Number {
 		this.assembleFixedPointNotation();
 		this.extendFixedPointNotation(w, f);
 		this.assembleExtendedDouble();
+	}
+	
+	public static Number numberCopy(Number original){
+		Number copy = new Number();
+		copy.setFraction(original.getFraction());
+		copy.setInteger(original.getInteger());
+		copy.setFractionBinary(original.getFractionBinary());
+		copy.setIntegerBinary(original.getIntegerBinary());
+		copy.setFullNumberDecimalDouble(original.getFullNumberDecimalDouble());
+		copy.setFullNumberDecimalString(original.getFullNumberDecimalString());
+		copy.setFullNumberSignedBinary(original.getFullNumberSignedBinary());
+		copy.setFullNumberUnsignedBinary(original.getFullNumberUnsignedBinary());
+		copy.setFullNumberFixedPointNotation(original.getFullNumberFixedPointNotation());
+		copy.setExtendedF(original.getExtendedF());
+		copy.setExtendedW(original.getExtendedW());
+		copy.setExtendedFixedPointNotation(original.getExtendedFixedPointNotation());
+		copy.setExtendedNumberDecimalDouble(original.getExtendedNumberDecimalDouble());
+		copy.setNegative(original.isNegative());
+		return copy;
+	}
+	
+	public static ArrayList<Number> buildArrayCopy(int extendedW, int extendedF, ArrayList<Number> original) throws Exception{
+
+		ArrayList<Number> copy = new ArrayList<Number>();
+
+		
+		// build array copies of actual values
+		for(int i = 0;i<original.size();i++) {
+			Number n = Number.numberCopy(original.get(i));
+			copy.add(n);
+		}
+		
+		for(int i =0;i<copy.size();i++) {
+			// assemble new extended fixed point binary and decimal
+			copy.get(i).extendFixedPointNotation(extendedW, extendedF);
+			copy.get(i).assembleExtendedDouble();
+		}
+		
+		return copy;
+
+
 	}
 
 }

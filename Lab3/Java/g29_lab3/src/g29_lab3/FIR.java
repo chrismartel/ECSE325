@@ -1,5 +1,7 @@
 package g29_lab3;
 
+import java.util.ArrayList;
+
 public class FIR {
 	public static double[] firNthOrderFilter(double[] inputs, double[] coeffs, int N) {
 		double[] outputs = new double[inputs.length];
@@ -22,5 +24,15 @@ public class FIR {
 			outputs[i] = sum;
 		}
 		return outputs;
+	}
+	
+	public static double RMSE(ArrayList<Number> estimatedValues, ArrayList<Number> actualValues) {
+		double sum = 0;
+		int N = actualValues.size();
+		for(int i = 0;i<N;i++) {
+			sum = sum + Math.pow((estimatedValues.get(i).getExtendedNumberDecimalDouble()-actualValues.get(i).getExtendedNumberDecimalDouble()), 2);
+		}
+		double rmse = Math.sqrt((sum/N));
+		return rmse;
 	}
 }
