@@ -140,4 +140,21 @@ public class Converting {
 		writer.close();
 		return array;
 	}
+	
+	public static boolean assertEqualFiles(FileReader input1, FileReader input2) throws IOException {
+		boolean areEqual = true;
+		BufferedReader reader1 = new BufferedReader(input1);
+		BufferedReader reader2 = new BufferedReader(input2);
+		String line1;
+		String line2;
+		while((line1 = reader1.readLine())!=null) {
+			line2 = reader2.readLine();
+			if(!line1.equals(line2)) {
+				areEqual = false;
+				System.out.println(line1+" vs "+line2);
+			}
+		}
+
+		return areEqual;
+	}
 }

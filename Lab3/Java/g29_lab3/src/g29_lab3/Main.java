@@ -19,6 +19,8 @@ public class Main {
 		int outputW = 17;
 		int outputF = 15;
 		int filterOrder = 25;
+		
+		// CONVERT INPUTS --> (1,15) FIXED-POINT
 		FileReader input = new FileReader("src/lab3-In.txt");
 		FileWriter converted_input = new FileWriter("src/lab3-In-converted.txt",false);
 		ArrayList<Number> numberInputs = Converting.convertNumbersToFixedPointSingleLine(input, converted_input,inputW,intputF);
@@ -27,6 +29,7 @@ public class Main {
 			inputs[i] = numberInputs.get(i).getExtendedNumberDecimalDouble();
 		}
 		
+		// CONVERT COEFFICIENTS --> (1,15) FIXED-POINT
 		FileReader coeff = new FileReader("src/lab3-coef.txt");
 		FileWriter converted_coeff = new FileWriter("src/lab3-coef-converted.txt",false);
 		ArrayList<Number> numberCoeffs = Converting.convertNumbersToFixedPointMultipleLines(coeff, converted_coeff,coeffW,coeffF);
@@ -35,15 +38,29 @@ public class Main {
 			coeffs[i] = numberCoeffs.get(i).getExtendedNumberDecimalDouble();
 		}
 		
+		
+		// CREATE EXPECTED OUTPUTS --> (2,15) FIXED-POINT
 		double[] outputs = FIR.firNthOrderFilter(inputs, coeffs, 25);
 		FileWriter outputText = new FileWriter("src/lab3-out.txt",false);
 		BufferedWriter bw = new BufferedWriter(outputText);
 		for(double output: outputs) {
-			bw.write(Double.toString(output));
+			Number n = new Number();
+			n.setFullNumberDecimalDouble(output);
+			n.wholeBuild(17, 15);
+			bw.write(n.getExtendedFixedPointNotation());
 			bw.newLine();
-			System.out.println(output);
 		}
 		bw.close();
+		
+		
+		// ASSERT EXPECTED OUTPUTS AND RESULTS
+		boolean filesAreAsserted = Converting.assertEqualFiles(new FileReader("src/lab3-out.txt"), new FileReader("src/lab3-results.txt"));
+		if(filesAreAsserted) {
+			System.out.println("Expected outputs and results outputs are the same!");
+		}
+		else {
+			System.out.println("Expected outputs and results outputs are not the same...");
+		}
 	}
 
 
